@@ -1,0 +1,21 @@
+// This tells Prisma to generate JavaScript client code
+generator client {
+  provider = "prisma-client-js" // Use the JS client generator
+}
+
+// This defines the database connection
+datasource db {
+  provider = "postgresql" // We are using PostgreSQL
+  url      = env("DATABASE_URL") // Load URL from .env file (works in Prisma 5.x)
+}
+
+// This defines the User table structure
+model User {
+  id        Int      @id @default(autoincrement()) // Primary key, auto-increment
+  username  String   @unique // Must be unique
+  email     String   @unique // Must be unique
+  phone     String   @unique // Must be unique
+  password  String   // Stores hashed password
+  isVerified Boolean @default(false) // Email verification status
+  createdAt DateTime @default(now()) // Timestamp of creation
+}
