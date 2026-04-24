@@ -38,7 +38,7 @@ const Signup = () => {
     
     if (result.success) {
       sessionStorage.setItem('signupSuccess', 'Account created successfully!');
-      navigate('/');
+      navigate('/home');
     } else {
       setGeneralError(result.message);
       

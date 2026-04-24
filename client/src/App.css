@@ -1,0 +1,39 @@
+/* ✅ GLOBAL APP STYLES - Let pages define their own backgrounds */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 50px;
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* ✅ Transparent - pages define their own backgrounds */
+  background: transparent !important;
+  height: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid #a67b5b;
+  outline-offset: 2px;
+}
+
+#root {
+  min-height: 100vh;
+  height: 100%;
+}
+
+/* Hide scrollbar for horizontal nav */
+.nav-bars::-webkit-scrollbar { display: none; }
+.nav-bars { -ms-overflow-style: none; scrollbar-width: none; }

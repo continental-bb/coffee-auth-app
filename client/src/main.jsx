@@ -1,29 +1,17 @@
-// Import React library
+// ✅ MAIN ENTRY POINT: Renders the React app with Router
+// This is the ONLY place where <Router> should exist
+
 import React from 'react';
-
-// Import ReactDOM for rendering React components to the DOM
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router } from 'react-router-dom'; // ✅ Import Router here
+import App from './App';
+import './index.css';
 
-// Import Chakra UI provider (enables Chakra components globally)
-import { ChakraProvider } from '@chakra-ui/react';
-
-// Import the main App component
-import App from './App.jsx';
-
-// Import BrowserRouter for React Router (enables navigation)
-import { BrowserRouter } from 'react-router-dom';
-
-// Find the root div in index.html and render the React app into it
+// ✅ Render app with Router wrapping everything
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // StrictMode helps catch bugs in development
   <React.StrictMode>
-    {/* BrowserRouter enables URL routing without page reloads */}
-    <BrowserRouter>
-      {/* ChakraProvider enables all Chakra UI components */}
-      <ChakraProvider>
-        {/* Main App component with all routes */}
-        <App />
-      </ChakraProvider>
-    </BrowserRouter>
+    <Router>  {/* ✅ SINGLE Router - wraps entire app */}
+      <App />
+    </Router>
   </React.StrictMode>
 );

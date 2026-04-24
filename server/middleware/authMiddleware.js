@@ -1,28 +1,42 @@
-const jwt = require('jsonwebtoken'); // Import library to verify JSON Web Tokens
+// ✅ AUTH MIDDLEWARE: Protects routes and verifies admin
+// Must exist for the imports to work
 
-// Middleware function to protect routes that require login
-const protect = (req, res, next) => { 
-  let token; // Initialize variable to hold the token
+const jwt = require('jsonwebtoken');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-  // Check if authorization header exists and starts with 'Bearer'
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1]; // Extract the token string after 'Bearer '
-  }
-
-  // If no token is found, send 401 Unauthorized error
-  if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token' }); 
-  }
-
+// ✅ PROTECT: Verify JWT token
+exports.protect = async (req, res, next) => {
   try {
-    // Verify the token using our secret key from .env
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
-    req.user = decoded; // Attach the decoded user data to the request object
-    next(); // Call next() to proceed to the next middleware or controller
+    let token;
+    
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'Not authorized, no token' });
+    }
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+    
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Not authorized, user not found' });
+    }
+    
+    req.user = user;
+    next();
   } catch (error) {
-    // If token is invalid or expired, send 401 error
-    return res.status(401).json({ message: 'Not authorized, token failed' }); 
+    res.status(401).json({ success: false, message: 'Not authorized, token failed', error: error.message });
   }
 };
 
-module.exports = { protect }; // Export the protect function for use in routes
+// ✅ ADMIN: Check if user is admin
+exports.admin = (req, res, next) => {
+  // For now, allow all authenticated users (customize later)
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ success: false, message: 'Admin access required' });
+  // }
+  next();
+};

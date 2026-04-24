@@ -1,3 +1,5 @@
+// ✅ LOGIN PAGE - Glassmorphism form with labels inside transparent inputs
+
 import React, { useState } from 'react';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -24,10 +26,9 @@ const Login = () => {
     
     if (result.success) {
       sessionStorage.setItem('loginSuccess', 'Signed in successfully!');
-      navigate('/');
+      navigate('/home');
     } else {
       setGeneralError(result.message);
-      
       const errorsMap = {};
       if (result.errors && Array.isArray(result.errors)) {
         result.errors.forEach(err => {
@@ -42,7 +43,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container"> {/* ✅ Full background wrapper */}
+    <div className="login-container">
       <Card className="shadow-lg border-0">
         <Card.Body className="p-5">
           <h2 className="text-center mb-4">Welcome Back</h2>
@@ -55,11 +56,12 @@ const Login = () => {
           )}
           
           <Form onSubmit={handleSubmit}>
+            {/* ✅ Email/Username/Phone - Label in Placeholder */}
             <Form.Group className="mb-3">
               <Form.Label>Email, Username, or Phone</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter your identifier"
+                placeholder="Email, Username, or Phone: ......"
                 value={loginInput}
                 onChange={(e) => {
                   setLoginInput(e.target.value);
@@ -67,17 +69,19 @@ const Login = () => {
                 }}
                 isInvalid={!!fieldErrors.identifier}
                 required
+                className="glass-input"
               />
               <Form.Control.Feedback type="invalid">
                 {fieldErrors.identifier}
               </Form.Control.Feedback>
             </Form.Group>
 
+            {/* ✅ Password - Label in Placeholder */}
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="Enter password"
+                placeholder="Password: ......"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -85,16 +89,18 @@ const Login = () => {
                 }}
                 isInvalid={!!fieldErrors.password}
                 required
+                className="glass-input"
               />
               <Form.Control.Feedback type="invalid">
                 {fieldErrors.password}
               </Form.Control.Feedback>
             </Form.Group>
 
+            {/* ✅ Submit Button */}
             <Button 
               variant="dark" 
               type="submit" 
-              className="w-100 mb-3"
+              className="w-100 mb-3 glass-btn"
               disabled={loading}
             >
               {loading ? (
@@ -107,6 +113,7 @@ const Login = () => {
               )}
             </Button>
 
+            {/* ✅ Navigation Links */}
             <div className="text-center">
               <p className="mb-0">
                 Don't have an account? <Link to="/signup">Sign Up</Link>
